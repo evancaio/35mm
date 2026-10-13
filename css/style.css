@@ -283,6 +283,7 @@ body {
 }
 
 .nav-shell {
+  position: relative;
   width: 100%;
   max-width: 1200px;
   display: flex;
@@ -979,6 +980,9 @@ body {
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
+  width: 100%;
+  max-width: 580px;
+  margin: 0 auto;
 }
 
 .wheel-ambient-glow {
@@ -996,6 +1000,11 @@ body {
 .canvas-box {
   position: relative;
   z-index: 2;
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 50%;
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85);
 }
@@ -1183,6 +1192,8 @@ body {
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.35s ease, visibility 0.35s ease;
@@ -1197,11 +1208,14 @@ body {
   position: relative;
   width: 100%;
   max-width: 860px;
+  max-height: calc(100vh - 3rem);
   background: var(--bg-surface);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9);
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin: auto;
   transform: scale(0.95) translateY(15px);
   transition: transform 0.4s var(--ease-spring);
 }
@@ -1501,97 +1515,355 @@ body {
 /* ==========================================================================
    RESPONSIVIDADE (Mobile & Tablet)
    ========================================================================== */
-@media (max-width: 900px) {
+/* ==========================================================================
+   RESPONSIVIDADE COMPLETA (Tablet, Mobile & Landscape)
+   ========================================================================== */
+
+/* Tablets / Telas Médias (<= 960px) */
+@media (max-width: 960px) {
   .sessions-cards-grid {
     grid-template-columns: 1fr;
-  }
-  
-  .reveal-card-body {
-    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 
-  .poster-display-side {
-    padding: 1.5rem;
-  }
-
-  .poster-image-holder {
-    max-width: 180px;
-  }
-
-  .poster-info-side {
-    padding: 1.75rem;
+  .session-card.full-bleed-card {
+    min-height: 400px;
   }
 
   .stage-footer-grid {
     grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .reveal-card-container {
+    max-width: 720px;
+  }
+
+  .reveal-card-body {
+    grid-template-columns: 280px 1fr;
   }
 }
 
-@media (max-width: 640px) {
-  .nav-shell {
-    border-radius: var(--radius-md);
+/* Tablets Verticais & Celulares Maiores (<= 768px) */
+@media (max-width: 768px) {
+  .main-wrapper {
+    padding: 1.5rem 1.25rem 5rem;
   }
 
-  .nav-segmented {
-    display: none; /* Menu mobile se necessário */
-  }
-
-  .mobile-toggle-btn {
-    display: block;
-  }
-
-  .nav-segmented.mobile-open {
-    display: flex;
+  /* Barra de Navegação Superior do Palco da Roleta */
+  .stage-nav-bar {
     flex-direction: column;
-    position: absolute;
-    top: calc(100% + 0.5rem);
-    left: 1.5rem;
-    right: 1.5rem;
-    background: var(--bg-surface);
-    border: 1px solid var(--border-strong);
-    border-radius: var(--radius-md);
-    padding: 0.5rem;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
-    z-index: 200;
+    align-items: stretch;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
   }
 
-  .pill-nav-item {
-    width: 100%;
+  .stage-back-btn {
+    align-self: flex-start;
+  }
+
+  .stage-center-meta {
     text-align: center;
-    padding: 0.65rem;
+    order: -1;
   }
 
-  .hero-title {
-    font-size: 2.2rem;
+  .stage-title {
+    font-size: 1.75rem;
   }
 
-  .session-card.full-bleed-card {
-    min-height: 380px;
-    padding: 1.4rem;
+  .stage-options-pill {
+    width: 100%;
+    justify-content: space-between;
+    padding: 0.45rem 0.85rem;
+    flex-wrap: wrap;
+    gap: 0.6rem;
   }
 
-  .card-bleed-title {
+  /* Modal de Revelação em Coluna Única com Scroll Suave */
+  .modal-backdrop {
+    padding: 0.75rem;
+    align-items: flex-start;
+  }
+
+  .reveal-card-container {
+    max-height: calc(100vh - 1.5rem);
+    border-radius: var(--radius-md);
+  }
+
+  .reveal-card-body {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .poster-display-side {
+    padding: 1.5rem 1rem;
+    background: linear-gradient(180deg, #000000 0%, #121215 100%);
+  }
+
+  .poster-image-holder {
+    max-width: 160px;
+  }
+
+  .poster-info-side {
+    padding: 1.35rem 1.25rem 1.5rem;
+  }
+
+  .film-title {
     font-size: 1.55rem;
   }
 
-  .spin-trigger-btn {
-    width: 100%;
-    padding: 1rem 1.5rem;
+  .synopsis-body {
+    max-height: 95px;
+    font-size: 0.88rem;
   }
 
   .reveal-actions-row {
     flex-direction: column;
     width: 100%;
+    gap: 0.65rem;
+    margin-top: 1.25rem;
   }
 
   .action-btn-primary, .action-btn-ghost {
     width: 100%;
     justify-content: center;
+    padding: 0.85rem 1.25rem;
   }
 
+  .wheel-mount-wrapper {
+    padding: 0.85rem;
+  }
+}
+
+/* Celulares Padrão (<= 640px) */
+@media (max-width: 640px) {
+  .site-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .nav-shell {
+    border-radius: var(--radius-md);
+  }
+
+  .nav-segmented {
+    display: none;
+  }
+
+  .mobile-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Dropdown Flutuante Mobile com Vidro Fosco */
+  .nav-segmented.mobile-open {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    right: 0;
+    background: rgba(18, 18, 22, 0.95);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    padding: 0.65rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
+    z-index: 200;
+    gap: 0.35rem;
+  }
+
+  .pill-nav-item {
+    width: 100%;
+    text-align: center;
+    padding: 0.7rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  /* Hero Section */
+  .hero-section {
+    padding: 1.6rem 1.25rem;
+    margin: 1.25rem auto 2.25rem;
+    border-radius: var(--radius-md);
+  }
+
+  .hero-badge {
+    padding: 0.3rem 0.65rem;
+    font-size: 0.68rem;
+    margin-bottom: 1rem;
+    max-width: 100%;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .hero-title {
+    font-size: 1.95rem;
+    line-height: 1.15;
+    margin-bottom: 0.85rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+
+  .grid-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.65rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .grid-heading {
+    font-size: 1.25rem;
+  }
+
+  .grid-stat-badge {
+    align-self: flex-start;
+    font-size: 0.72rem;
+  }
+
+  /* Cards de Sessão */
+  .session-card.full-bleed-card {
+    min-height: 370px;
+    padding: 1.35rem;
+    border-radius: var(--radius-md);
+  }
+
+  .card-bleed-title {
+    font-size: 1.5rem;
+  }
+
+  .card-bleed-tagline {
+    font-size: 0.85rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .card-enter-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+
+  /* Botão de Giro */
+  .spin-trigger-btn {
+    width: 100%;
+    max-width: 360px;
+    padding: 1rem 1.5rem;
+    font-size: 0.98rem;
+  }
+
+  /* Rodapé */
   .footer-content {
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 0.75rem;
     text-align: center;
+  }
+
+  /* Tamanhos dos murais de fundo em telas pequenas para economizar GPU */
+  .vault-poster-item {
+    width: 125px;
+    height: 185px;
+  }
+
+  .mini-poster-card {
+    width: 90px;
+    height: 135px;
+  }
+}
+
+/* Celulares Compactos (<= 420px) */
+@media (max-width: 420px) {
+  .main-wrapper {
+    padding: 1rem 0.85rem 3.5rem;
+  }
+
+  .site-header {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .brand-name {
+    font-size: 0.88rem;
+  }
+
+  .hero-section {
+    padding: 1.35rem 0.95rem;
+  }
+
+  .hero-title {
+    font-size: 1.7rem;
+  }
+
+  .session-card.full-bleed-card {
+    min-height: 345px;
+    padding: 1.15rem;
+  }
+
+  .card-bleed-title {
+    font-size: 1.38rem;
+  }
+
+  .card-session-pill {
+    padding: 0.28rem 0.55rem;
+    font-size: 0.7rem;
+  }
+
+  .stage-options-pill {
+    padding: 0.35rem 0.5rem;
+    gap: 0.4rem;
+  }
+
+  .toggle-control {
+    font-size: 0.75rem;
+  }
+
+  .pool-count-pill {
+    font-size: 0.7rem;
+    padding: 0.22rem 0.45rem;
+  }
+
+  .pill-btn-icon {
+    font-size: 0.72rem;
+    padding: 0.2rem 0.35rem;
+  }
+
+  .poster-image-holder {
+    max-width: 130px;
+  }
+}
+
+/* Dispositivos Móveis no Modo Paisagem (Landscape <= 540px altura) */
+@media (max-height: 540px) and (orientation: landscape) {
+  .main-wrapper {
+    padding: 1rem 1.25rem 2.5rem;
+  }
+
+  .roulette-arena {
+    margin: 0.5rem 0 2rem;
+  }
+
+  .reveal-card-container {
+    max-height: 92vh;
+  }
+
+  .reveal-card-body {
+    grid-template-columns: 170px 1fr;
+    min-height: auto;
+  }
+
+  .poster-display-side {
+    padding: 1rem;
+  }
+
+  .poster-image-holder {
+    max-width: 120px;
+  }
+
+  .poster-info-side {
+    padding: 1rem 1.25rem;
+  }
+
+  .synopsis-body {
+    max-height: 70px;
   }
 }

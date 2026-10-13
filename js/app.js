@@ -226,6 +226,15 @@ class RoletaApp {
           this.navMenu.classList.remove("mobile-open");
         });
       });
+
+      // Fechar menu mobile ao clicar fora
+      document.addEventListener("click", (e) => {
+        if (this.navMenu && this.navMenu.classList.contains("mobile-open")) {
+          if (!this.navMenu.contains(e.target) && !this.mobileMenuToggle.contains(e.target)) {
+            this.navMenu.classList.remove("mobile-open");
+          }
+        }
+      });
     }
 
     // Toggle de não repetição

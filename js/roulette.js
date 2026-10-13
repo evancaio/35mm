@@ -46,15 +46,22 @@ class MovieRoulette {
   setupResize() {
     const resize = () => {
       if (!this.canvas) return;
+      
+      // Mede largura segura real com margem de 32px (16px em cada lateral)
+      const screenWidth = window.innerWidth || document.documentElement.clientWidth || 360;
+      const screenHeight = window.innerHeight || document.documentElement.clientHeight || 640;
+      
       const parent = this.canvas.parentElement;
-      let width = parent ? parent.getBoundingClientRect().width : 0;
+      const parentWidth = (parent && parent.parentElement) ? parent.parentElement.getBoundingClientRect().width : screenWidth;
       
-      if (!width || width < 50) {
-        width = Math.min(window.innerWidth - 48, 540);
-      }
+      // Limite pela largura da tela e contêiner
+      const maxAvailableWidth = Math.min(screenWidth - 32, parentWidth || 540);
       
-      const size = Math.max(Math.min(width, 560), 280);
-      const dpr = window.devicePixelRatio || 1;
+      // Em celulares no modo paisagem (landscape), limite pela altura para caber perfeitamente
+      const maxAvailableHeight = Math.max(screenHeight - 210, 260);
+      
+      const size = Math.max(Math.min(maxAvailableWidth, maxAvailableHeight, 540), 270);
+      const dpr = Math.min(window.devicePixelRatio || 1, 2); // Cap at 2 para máxima performance a 60fps
       
       this.canvas.style.width = `${size}px`;
       this.canvas.style.height = `${size}px`;
@@ -62,11 +69,12 @@ class MovieRoulette {
       this.canvas.height = Math.floor(size * dpr);
       this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       this.size = size;
-      this.radius = (size / 2) - 16;
+      this.radius = (size / 2) - 14;
       this.draw();
     };
 
     window.addEventListener("resize", resize);
+    window.addEventListener("orientationchange", () => setTimeout(resize, 80));
     this.resize = resize;
     resize();
     setTimeout(resize, 60);
@@ -245,19 +253,22 @@ class MovieRoulette {
         ctx.textBaseline = "middle";
 
         // Número do índice na borda exterior
-        ctx.font = "600 9px 'Plus Jakarta Sans', sans-serif";
+        const numFontSize = Math.max(7, Math.min(9, Math.round((this.size / 540) * 9)));
+        ctx.font = `600 ${numFontSize}px 'Plus Jakarta Sans', sans-serif`;
         ctx.fillStyle = palette.num;
-        ctx.fillText(String(i + 1).padStart(2, "0"), r - 12, 0);
+        ctx.fillText(String(i + 1).padStart(2, "0"), r - 10, 0);
 
-        // Título do filme
-        ctx.font = "700 11px 'Plus Jakarta Sans', sans-serif";
+        // Título do filme (escala proporcionalmente em telas compactas)
+        const titleFontSize = Math.max(8.5, Math.min(11, Math.round((this.size / 540) * 11)));
+        ctx.font = `700 ${titleFontSize}px 'Plus Jakarta Sans', sans-serif`;
         ctx.fillStyle = palette.text;
 
         let displayTitle = movie.title;
-        if (displayTitle.length > 22) {
-          displayTitle = displayTitle.slice(0, 20) + "…";
+        const maxLen = this.size < 360 ? 16 : 22;
+        if (displayTitle.length > maxLen) {
+          displayTitle = displayTitle.slice(0, maxLen - 2) + "…";
         }
-        ctx.fillText(displayTitle, r - 32, 0);
+        ctx.fillText(displayTitle, r - (this.size < 360 ? 24 : 32), 0);
 
         ctx.restore();
       }
@@ -275,7 +286,7 @@ class MovieRoulette {
     ctx.fill();
 
     // 5. Hub Central (Disco Minimalista estilo Onyx)
-    const hubRadius = 42;
+    const hubRadius = Math.max(30, Math.min(42, Math.round((this.size / 540) * 42)));
     ctx.save();
     ctx.shadowColor = "rgba(0,0,0,0.6)";
     ctx.shadowBlur = 12;
@@ -293,13 +304,14 @@ class MovieRoulette {
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.arc(0, 0, hubRadius - 6, 0, 2 * Math.PI);
+    ctx.arc(0, 0, hubRadius - 5, 0, 2 * Math.PI);
     ctx.lineWidth = 1;
     ctx.strokeStyle = themeColor;
     ctx.stroke();
 
     // Monograma / Nome central
-    ctx.font = "800 11px 'Plus Jakarta Sans', sans-serif";
+    const hubFontSize = Math.max(8.5, Math.min(11, Math.round((this.size / 540) * 11)));
+    ctx.font = `800 ${hubFontSize}px 'Plus Jakarta Sans', sans-serif`;
     ctx.fillStyle = "#ffffff";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
