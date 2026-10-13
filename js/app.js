@@ -44,7 +44,8 @@ class RoletaApp {
       mista: mixedMovies.map(m => m.id),
       terror: horrorMovies.map(m => m.id),
       acao: actionMovies.map(m => m.id),
-      drama: dramaMovies.map(m => m.id)
+      drama: dramaMovies.map(m => m.id),
+      nacional: nationalMovies.map(m => m.id)
     };
     this.savePools();
   }
@@ -101,14 +102,15 @@ class RoletaApp {
   renderHomeVault() {
     if (!this.homeVaultContainer) return;
 
-    // Combina todos os 80 filmes de forma intercalada
+    // Combina todos os 100 filmes de forma intercalada (incluindo nacionais)
     const allMovies = [];
-    const maxLen = Math.max(mixedMovies.length, horrorMovies.length, actionMovies.length, dramaMovies.length);
+    const maxLen = Math.max(mixedMovies.length, horrorMovies.length, actionMovies.length, dramaMovies.length, nationalMovies.length);
     for (let i = 0; i < maxLen; i++) {
       if (mixedMovies[i]) allMovies.push(mixedMovies[i]);
       if (horrorMovies[i]) allMovies.push(horrorMovies[i]);
       if (actionMovies[i]) allMovies.push(actionMovies[i]);
       if (dramaMovies[i]) allMovies.push(dramaMovies[i]);
+      if (nationalMovies[i]) allMovies.push(nationalMovies[i]);
     }
 
     const numRows = 5;
@@ -369,7 +371,8 @@ class RoletaApp {
       mista: "rgba(245, 158, 11, 0.25)",
       terror: "rgba(239, 68, 68, 0.25)",
       acao: "rgba(249, 115, 22, 0.25)",
-      drama: "rgba(6, 182, 212, 0.25)"
+      drama: "rgba(6, 182, 212, 0.25)",
+      nacional: "rgba(16, 185, 129, 0.28)"
     };
     document.documentElement.style.setProperty("--current-theme", catData.themeColor);
     document.documentElement.style.setProperty("--current-glow", themeGlows[categoryKey] || "rgba(245, 158, 11, 0.25)");
@@ -404,7 +407,7 @@ class RoletaApp {
     });
   }
 
-  // Renderiza os 4 Cards com Full-Bleed Cinema Backdrop (Estilo Apple TV+ / Awwwards Site of the Day)
+  // Renderiza os Cards com Full-Bleed Cinema Backdrop (Estilo Apple TV+ / Awwwards Site of the Day)
   renderHomeCards() {
     const container = document.getElementById("sessionsCardsGrid");
     if (!container) return;
@@ -414,7 +417,8 @@ class RoletaApp {
       mista: (categoriesData.mista.movies.find(m => m.id === "mix-3") || categoriesData.mista.movies[0]), // Interestelar
       terror: (categoriesData.terror.movies.find(m => m.id === "hor-1") || categoriesData.terror.movies[0]), // O Iluminado
       acao: (categoriesData.acao.movies.find(m => m.id === "act-1") || categoriesData.acao.movies[0]), // Mad Max: Estrada da Fúria
-      drama: (categoriesData.drama.movies.find(m => m.id === "dra-1") || categoriesData.drama.movies[0]) // O Poderoso Chefão
+      drama: (categoriesData.drama.movies.find(m => m.id === "dra-1") || categoriesData.drama.movies[0]), // O Poderoso Chefão
+      nacional: (categoriesData.nacional.movies.find(m => m.id === "nat-2") || categoriesData.nacional.movies[0]) // Central do Brasil
     };
 
     container.innerHTML = Object.keys(categoriesData).map(key => {

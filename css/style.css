@@ -33,6 +33,8 @@
   --theme-acao-glow: rgba(249, 115, 22, 0.22);
   --theme-drama: #06b6d4;
   --theme-drama-glow: rgba(6, 182, 212, 0.22);
+  --theme-nacional: #10b981;
+  --theme-nacional-glow: rgba(16, 185, 129, 0.28);
 
   /* Variável dinâmica reativa ao gênero ativo */
   --current-theme: var(--theme-mista);
@@ -816,6 +818,10 @@ body {
 .session-card[data-category="drama"] {
   --card-theme-color: var(--theme-drama);
   --card-theme-glow: var(--theme-drama-glow);
+}
+.session-card[data-category="nacional"] {
+  --card-theme-color: var(--theme-nacional);
+  --card-theme-glow: var(--theme-nacional-glow);
 }
 
 /* ==========================================================================
