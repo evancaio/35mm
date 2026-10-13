@@ -5,7 +5,13 @@ class RoletaApp {
   constructor() {
     this.currentCategoryKey = "mista";
     this.excludeDrawn = true; // Impede repetições de filmes sorteados
-    this.drawnHistory = JSON.parse(localStorage.getItem("roleta_history") || "[]");
+    let savedHistory = null;
+    try {
+      savedHistory = JSON.parse(localStorage.getItem("roleta_history") || "[]");
+    } catch (e) {
+      savedHistory = [];
+    }
+    this.drawnHistory = Array.isArray(savedHistory) ? savedHistory : [];
     this.categoryPools = {};
     this.roulette = null;
     this.winningMovie = null;
@@ -24,6 +30,9 @@ class RoletaApp {
     if (savedPools) {
       try {
         this.categoryPools = JSON.parse(savedPools);
+        if (!this.categoryPools || typeof this.categoryPools !== "object") {
+          this.resetAllPools();
+        }
       } catch (e) {
         this.resetAllPools();
       }
@@ -31,12 +40,19 @@ class RoletaApp {
       this.resetAllPools();
     }
 
-    // Validação de integridade
-    Object.keys(categoriesData).forEach(catKey => {
-      if (!this.categoryPools[catKey] || !Array.isArray(this.categoryPools[catKey])) {
-        this.categoryPools[catKey] = categoriesData[catKey].movies.map(m => m.id);
+    // Validação de integridade e preenchimento garantido de todas as categorias
+    let needsSave = false;
+    const cats = (typeof categoriesData !== "undefined") ? categoriesData : (window.categoriesData || {});
+    Object.keys(cats).forEach(catKey => {
+      if (!this.categoryPools[catKey] || !Array.isArray(this.categoryPools[catKey]) || this.categoryPools[catKey].length === 0) {
+        this.categoryPools[catKey] = cats[catKey].movies.map(m => m.id);
+        needsSave = true;
       }
     });
+
+    if (needsSave) {
+      this.savePools();
+    }
   }
 
   resetAllPools() {
@@ -217,19 +233,59 @@ class RoletaApp {
       }
     });
 
-    // Menu Mobile
+    // Navegação direta nos links do header
+    this.navLinks.forEach(link => {
+      link.addEventListener("click", () => {
+        if (this.navMenu) this.navMenu.classList.remove("mobile-open");
+        const href = link.getAttribute("href") || "";
+        const targetKey = href.replace("#", "").toLowerCase().trim();
+        const cats = (typeof categoriesData !== "undefined") ? categoriesData : (window.categoriesData || {});
+        if (targetKey === "home" || !targetKey) {
+          this.showHomeView();
+        } else if (cats[targetKey]) {
+          this.showRouletteView(targetKey);
+        }
+      });
+    });
+
+    // Logo do Header navega para a Home
+    const logoBrand = document.getElementById("navBrandLogo");
+    if (logoBrand) {
+      logoBrand.addEventListener("click", () => {
+        if (this.navMenu) this.navMenu.classList.remove("mobile-open");
+        this.showHomeView();
+      });
+    }
+
+    // Botão Voltar do palco navega para a Home
+    const backBtn = document.querySelector(".stage-back-btn");
+    if (backBtn) {
+      backBtn.addEventListener("click", () => {
+        this.showHomeView();
+      });
+    }
+
+    // Delegação de cliques nos cards de sessão da Home
+    const grid = document.getElementById("sessionsCardsGrid");
+    if (grid) {
+      grid.addEventListener("click", (e) => {
+        const card = e.target.closest(".session-card");
+        if (card) {
+          const catId = card.getAttribute("data-category");
+          const cats = (typeof categoriesData !== "undefined") ? categoriesData : (window.categoriesData || {});
+          if (catId && cats[catId]) {
+            this.showRouletteView(catId);
+          }
+        }
+      });
+    }
+
+    // Menu Mobile toggle e fechamento ao clicar fora
     if (this.mobileMenuToggle && this.navMenu) {
       this.mobileMenuToggle.addEventListener("click", () => {
         this.navMenu.classList.toggle("mobile-open");
       });
 
-      this.navLinks.forEach(link => {
-        link.addEventListener("click", () => {
-          this.navMenu.classList.remove("mobile-open");
-        });
-      });
-
-      // Fechar menu mobile ao clicar fora
       document.addEventListener("click", (e) => {
         if (this.navMenu && this.navMenu.classList.contains("mobile-open")) {
           if (!this.navMenu.contains(e.target) && !this.mobileMenuToggle.contains(e.target)) {
@@ -304,13 +360,14 @@ class RoletaApp {
     }
   }
 
-  // Roteamento via Hash da URL (#home, #mista, #terror, #acao, #drama)
+  // Roteamento via Hash da URL (#home, #mista, #terror, #acao, #drama, #nacional)
   initRouter() {
     const handleRoute = () => {
-      let hash = window.location.hash.replace("#", "").toLowerCase();
+      let hash = window.location.hash.replace("#", "").toLowerCase().trim();
+      const cats = (typeof categoriesData !== "undefined") ? categoriesData : (window.categoriesData || {});
       if (!hash || hash === "" || hash === "home") {
         this.showHomeView();
-      } else if (categoriesData[hash]) {
+      } else if (cats[hash]) {
         this.showRouletteView(hash);
       } else {
         this.showHomeView();
@@ -695,7 +752,15 @@ function getStreamingBadgeHtml(providerName) {
   `;
 }
 
-// Inicializar aplicativo ao carregar o DOM
-document.addEventListener("DOMContentLoaded", () => {
-  window.app = new RoletaApp();
-});
+// Inicialização segura e resiliente do app
+function startRoletaApp() {
+  if (!window.app) {
+    window.app = new RoletaApp();
+  }
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", startRoletaApp);
+} else {
+  startRoletaApp();
+}

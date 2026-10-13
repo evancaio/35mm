@@ -1586,3 +1586,15 @@ function getFallbackPoster(title, year, genre) {
   const cleanGenre = encodeURIComponent(genre);
   return `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="500" height="750" viewBox="0 0 500 750"><rect width="500" height="750" fill="%23121215"/><rect x="20" y="20" width="460" height="710" rx="16" fill="%2318181c" stroke="rgba(255,255,255,0.08)" stroke-width="2"/><text x="250" y="120" font-family="'Plus Jakarta Sans',sans-serif" font-weight="700" font-size="14" fill="%2371717a" letter-spacing="3" text-anchor="middle">SESSÃO 35MM</text><circle cx="250" cy="280" r="45" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="3"/><polygon points="243,265 263,280 243,295" fill="%23f4f4f5"/><text x="250" y="440" font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="28" fill="%23f4f4f5" text-anchor="middle">${cleanTitle}</text><text x="250" y="480" font-family="'Plus Jakarta Sans',sans-serif" font-weight="600" font-size="16" fill="%23a1a1aa" text-anchor="middle">${year} • ${cleanGenre}</text><line x1="200" y1="520" x2="300" y2="520" stroke="rgba(255,255,255,0.1)" stroke-width="2"/><text x="250" y="660" font-family="'Plus Jakarta Sans',sans-serif" font-weight="600" font-size="12" fill="%2352525b" letter-spacing="2" text-anchor="middle">CINEMA ARCHIVE</text></svg>`;
 }
+
+// Exportação explícita no escopo global para garantir compatibilidade universal
+if (typeof window !== "undefined") {
+  window.mixedMovies = mixedMovies;
+  window.horrorMovies = horrorMovies;
+  window.actionMovies = actionMovies;
+  window.dramaMovies = dramaMovies;
+  window.nationalMovies = nationalMovies;
+  window.categoriesData = categoriesData;
+  window.getFallbackPoster = getFallbackPoster;
+}
+

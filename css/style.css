@@ -842,6 +842,12 @@ body {
   --card-theme-glow: var(--theme-nacional-glow);
 }
 
+@media (min-width: 961px) {
+  .session-card[data-category="nacional"]:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}
+
 /* ==========================================================================
    VIEW 2: PALCO DA ROLETA (Roulette Stage Awwwards Style)
    ========================================================================== */
