@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sessão 35mm — Roleta Cinematográfica Curada</title>
+  <meta name="description" content="Não sabe o que assistir? Deixe o acaso curar sua noite de cinema. 80 clássicos em 4 sessões temáticas sem repetição.">
+  
+  <!-- Tipografia Neo-Grotesk Internacional (Plus Jakarta Sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="css/style.css">
+  
+  <!-- Favicon SVG Moderno -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%2309090b'/><circle cx='50' cy='50' r='32' fill='none' stroke='%23f59e0b' stroke-width='6'/><circle cx='50' cy='50' r='8' fill='%23ef4444'/><circle cx='50' cy='22' r='4' fill='%23f59e0b'/><circle cx='50' cy='78' r='4' fill='%23f59e0b'/><circle cx='22' cy='50' r='4' fill='%23f59e0b'/><circle cx='78' cy='50' r='4' fill='%23f59e0b'/></svg>">
+</head>
+<body>
+
+  <!-- Ambient Glow de Fundo (Reativo por Gênero) -->
+  <div class="ambient-glow-layer" id="ambientGlowLayer" aria-hidden="true"></div>
+
+  <!-- Fundo Dinâmico da Home: The Living Vault (Mural Suave com os 80 Filmes) -->
+  <div class="home-vault-backdrop" id="homeVaultBackdrop" aria-hidden="true">
+    <div class="home-vault-mask"></div>
+    <div class="home-vault-tracks" id="homeVaultTracksContainer">
+      <!-- Gerado dinamicamente via JS com os 80 clássicos em 3 faixas suaves -->
+    </div>
+  </div>
+
+  <!-- Fundo Dinâmico de Pôsteres da Sessão (Esteira Inclinada no Palco da Roleta) -->
+  <div class="cinema-backdrop-wrapper" id="cinemaBackdropWrapper" aria-hidden="true">
+    <div class="cinema-backdrop-mask"></div>
+    <div class="cinema-backdrop-tracks" id="backdropTracksContainer">
+      <!-- Gerado dinamicamente via JS com os posters dos 20 filmes da sessão -->
+    </div>
+  </div>
+
+  <!-- Barra de Navegação Flutuante Minimalista (Recent.design / Godly style) -->
+  <header class="site-header">
+    <div class="nav-shell">
+      <!-- Marca / Logo -->
+      <a href="#home" class="brand-link" id="navBrandLogo">
+        <div class="brand-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polygon points="10 8 16 12 10 16 10 8"/>
+          </svg>
+        </div>
+        <span class="brand-name">SESSÃO <strong>35MM</strong></span>
+      </a>
+
+      <!-- Segmented Pill Controls (Filtros de Sessão) -->
+      <nav class="nav-segmented" id="navLinksMenu" aria-label="Navegação de Sessões">
+        <a href="#home" class="pill-nav-item active" id="navLinkHome">Início</a>
+        <a href="#mista" class="pill-nav-item" id="navLinkMista">Mista</a>
+        <a href="#terror" class="pill-nav-item" id="navLinkTerror">Terror</a>
+        <a href="#acao" class="pill-nav-item" id="navLinkAcao">Ação</a>
+        <a href="#drama" class="pill-nav-item" id="navLinkDrama">Drama</a>
+      </nav>
+
+      <!-- Ações do Header -->
+      <div class="header-actions">
+        <button id="soundToggleBtn" class="pill-action-btn" title="Ativar/Desativar Efeitos Sonoros" aria-label="Alternar Som">
+          <svg class="sound-icon-on" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+          </svg>
+          <svg class="sound-icon-off" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <line x1="23" y1="9" x2="17" y2="15"/>
+            <line x1="17" y1="9" x2="23" y2="15"/>
+          </svg>
+          <span class="sound-label">ÁUDIO</span>
+        </button>
+
+        <button id="mobileMenuToggle" class="mobile-toggle-btn" aria-label="Abrir Menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Container Principal -->
+  <main class="main-wrapper">
+
+    <!-- ==========================================
+         VIEW 1: HOME / CATÁLOGO DAS 4 SESSÕES
+         ========================================== -->
+    <section id="homeView" class="view-section active">
+      
+      <!-- Hero Editorial Clean -->
+      <section class="hero-section">
+        <div class="hero-badge">
+          <span class="pulse-indicator"></span>
+          <span>CURADORIA EXCLUSIVA • 80 OBRAS-PRIMAS</span>
+        </div>
+        <h1 class="hero-title">Qual filme você vai assistir hoje?</h1>
+        <p class="hero-subtitle">
+          Deixe o acaso decidir sua noite. Escolha o clima, gire a roleta cinematográfica e receba uma recomendação infalível com streaming oficial.
+        </p>
+      </section>
+
+      <!-- Grade dos 4 Cards de Experiência Cinematográfica -->
+      <section class="sessions-grid-section">
+        <div class="grid-header">
+          <div>
+            <h2 class="grid-heading">Salas em Cartaz</h2>
+            <p class="grid-subheading">Selecione uma categoria para abrir o palco de sorteio</p>
+          </div>
+          <div class="grid-stat-badge">4 SESSÕES • 20 FILMES CADA</div>
+        </div>
+
+        <div class="sessions-cards-grid" id="sessionsCardsGrid">
+          <!-- Renderizado dinamicamente via JS com stack de pôsteres e microinterações -->
+        </div>
+      </section>
+
+    </section>
+
+    <!-- ==========================================
+         VIEW 2: PALCO DA ROLETA (ROULETTE STAGE)
+         ========================================== -->
+    <section id="rouletteView" class="view-section">
+      
+      <!-- Barra Superior do Palco -->
+      <div class="stage-nav-bar">
+        <a href="#home" class="stage-back-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+          <span>Todas as Salas</span>
+        </a>
+
+        <div class="stage-center-meta">
+          <span class="stage-session-pill" id="stageSessionCode">SESSÃO 01</span>
+          <h2 class="stage-title" id="stageCategoryTitle">Roleta Mista</h2>
+          <p class="stage-subtitle" id="stageSubtitle">Seleção Geral dos Melhores Filmes</p>
+        </div>
+
+        <!-- Controles de Pool e Repetição -->
+        <div class="stage-options-pill">
+          <label class="toggle-control" title="Evita que o mesmo filme saia duas vezes nesta sessão">
+            <input type="checkbox" id="excludeDrawnCheckbox" checked>
+            <span class="toggle-slider"></span>
+            <span class="toggle-text">Sem repetição</span>
+          </label>
+          <div class="pool-count-pill" id="poolCounter">20 DISPONÍVEIS</div>
+          <button id="resetCategoryBtn" class="pill-btn-icon" title="Restaurar todos os 20 filmes desta sala">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+              <path d="M21 3v5h-5"/>
+              <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+              <path d="M3 21v-5h5"/>
+            </svg>
+            <span>Resetar</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Arena Central da Roleta -->
+      <div class="roulette-arena">
+        
+        <!-- Frame com Aura de Iluminação Temática -->
+        <div class="wheel-mount-wrapper">
+          <div class="wheel-ambient-glow" id="wheelAmbientGlow"></div>
+          <div class="canvas-box">
+            <canvas id="rouletteCanvas" width="600" height="600"></canvas>
+          </div>
+        </div>
+
+        <!-- Botão de Ação Primário -->
+        <div class="spin-control-container">
+          <button id="spinButton" class="spin-trigger-btn">
+            <div class="spin-btn-shine"></div>
+            <span class="spin-btn-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polygon points="10 8 16 12 10 16 10 8"/>
+              </svg>
+            </span>
+            <span class="btn-label">GIRAR A ROLETA</span>
+          </button>
+          <span class="spin-hint">Clique para iniciar o sorteio com física desacelerada</span>
+        </div>
+
+      </div>
+
+      <!-- Sessão Inferior: Histórico de Sorteios & Guia -->
+      <div class="stage-footer-grid">
+        <div class="footer-card">
+          <div class="footer-card-header">
+            <h3>Filmes Sorteados Nesta Sessão</h3>
+            <button id="clearHistoryBtn" class="text-action-btn">Limpar histórico</button>
+          </div>
+          <div class="history-feed" id="historyListContainer">
+            <!-- Gerado dinamicamente -->
+          </div>
+        </div>
+
+        <div class="footer-card">
+          <div class="footer-card-header">
+            <h3>Sobre Esta Curadoria</h3>
+            <span class="badge-tag">35MM VAULT</span>
+          </div>
+          <div class="curation-text">
+            <p>
+              Cada sessão reúne <strong>20 obras aclamadas</strong> por crítica e público mundial. O motor da roleta calcula paradas mecânicas sem viés de algoritmo.
+            </p>
+            <p>
+              Ao encerrar o giro, a ficha técnica completa e as plataformas de streaming oficiais aparecem instantaneamente para você dar o play.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ==========================================
+       MODAL: REVELAÇÃO CINEMATOGRÁFICA (Awwwards Style)
+       ========================================== -->
+  <div class="modal-backdrop" id="revealModalOverlay" role="dialog" aria-modal="true" aria-labelledby="revealedTitle">
+    <div class="reveal-card-container">
+      
+      <!-- Botão de Fechar Rápido -->
+      <button class="modal-dismiss-btn" id="modalCloseBtn" aria-label="Fechar janela">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+
+      <div class="reveal-card-body">
+        
+        <!-- Pôster do Filme com Glow de Sangria de Cor -->
+        <div class="poster-display-side">
+          <div class="poster-glow-backdrop" id="revealedPosterGlow"></div>
+          <div class="poster-image-holder">
+            <img id="revealedPosterImg" src="" alt="Cartaz do Filme Selecionado">
+            <div class="poster-rating-badge" id="revealedRating">★ 8.9</div>
+          </div>
+        </div>
+
+        <!-- Detalhes Editoriais do Filme -->
+        <div class="poster-info-side">
+          <div class="info-top-badge">
+            <span class="fate-pill">FILME SORTEADO</span>
+          </div>
+
+          <h2 class="film-title" id="revealedTitle">Título do Filme</h2>
+          <p class="film-original-title" id="revealedOriginalTitle">Original: Title</p>
+
+          <div class="film-meta-row">
+            <span class="info-pill" id="revealedYear">2024</span>
+            <span class="info-pill" id="revealedDuration">120 min</span>
+            <span class="info-pill pill-genre" id="revealedGenre">Suspense / Drama</span>
+          </div>
+
+          <div class="synopsis-box">
+            <h4 class="synopsis-title">Sinopse</h4>
+            <p class="synopsis-body" id="revealedSynopsis">Descrição e enredo do filme.</p>
+          </div>
+
+          <div class="director-line" id="revealedDirector">
+            Direção: <strong>Diretor</strong>
+          </div>
+
+          <!-- Onde Assistir (Streaming Oficial) -->
+          <div class="streaming-hub">
+            <span class="streaming-hub-label">Disponível em:</span>
+            <div class="streaming-list" id="revealedStreamings">
+              <!-- Badges geradas via JS -->
+            </div>
+          </div>
+
+          <!-- Botões de Ação -->
+          <div class="reveal-actions-row">
+            <button id="modalSpinAgainBtn" class="action-btn-primary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+              </svg>
+              <span>Girar Novamente</span>
+            </button>
+            <button id="modalBackHomeBtn" class="action-btn-ghost">
+              <span>Trocar de Sala</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rodapé Minimalista -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-left">
+        <span class="footer-logo">SESSÃO 35MM</span>
+        <span class="footer-divider">•</span>
+        <span class="footer-desc">Curadoria Cinematográfica Independente</span>
+      </div>
+      <div class="footer-right">
+        <span>80 Clássicos & Obras Aclamadas</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/movies-data.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/roulette.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
