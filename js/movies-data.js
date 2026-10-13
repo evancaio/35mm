@@ -1568,12 +1568,12 @@ const categoriesData = {
   },
   nacional: {
     id: "nacional",
-    name: "Filmes Nacionais 🇧🇷",
+    name: "Filmes Nacionais",
     sessionCode: "SESSÃO 05",
     subtitle: "Obras-Primas do Cinema Brasileiro • Vozes & Identidade",
     tagline: "Do sertão épico às metrópoles: o melhor do cinema brasileiro",
     description: "20 produções históricas do cinema nacional premiadas internacionalmente e aclamadas pelo público e crítica.",
-    badge: "BRASIL 🇧🇷",
+    badge: "CINEMA NACIONAL",
     themeColor: "#10b981",
     secondaryColor: "#047857",
     movies: nationalMovies

@@ -435,7 +435,11 @@ class RoletaApp {
     document.documentElement.style.setProperty("--current-glow", themeGlows[categoryKey] || "rgba(245, 158, 11, 0.25)");
 
     // Atualizar títulos
-    this.categoryTitle.textContent = catData.name;
+    if (categoryKey === "nacional") {
+      this.categoryTitle.innerHTML = `${catData.name} <svg class="flag-icon-br" viewBox="0 0 20 14" width="20" height="14" style="border-radius:2px; vertical-align:middle; display:inline-block; margin-left:8px; box-shadow:0 1px 4px rgba(0,0,0,0.4);" aria-hidden="true"><rect width="20" height="14" fill="#009c3b"/><polygon points="10,1.5 18.5,7 10,12.5 1.5,7" fill="#ffdf00"/><circle cx="10" cy="7" r="3.2" fill="#002776"/><path d="M7 6.8 C 8.5 6.2, 11.5 6.2, 13 7.2" stroke="#ffffff" stroke-width="0.5" fill="none"/></svg>`;
+    } else {
+      this.categoryTitle.textContent = catData.name;
+    }
     this.sessionSubtitle.textContent = catData.subtitle;
     this.sessionCodeBadge.textContent = catData.sessionCode;
 
@@ -475,7 +479,7 @@ class RoletaApp {
       terror: (categoriesData.terror.movies.find(m => m.id === "hor-1") || categoriesData.terror.movies[0]), // O Iluminado
       acao: (categoriesData.acao.movies.find(m => m.id === "act-1") || categoriesData.acao.movies[0]), // Mad Max: Estrada da Fúria
       drama: (categoriesData.drama.movies.find(m => m.id === "dra-1") || categoriesData.drama.movies[0]), // O Poderoso Chefão
-      nacional: (categoriesData.nacional.movies.find(m => m.id === "nat-2") || categoriesData.nacional.movies[0]) // Central do Brasil
+      nacional: (categoriesData.nacional.movies.find(m => m.id === "nat-1") || categoriesData.nacional.movies[0]) // Cidade de Deus
     };
 
     container.innerHTML = Object.keys(categoriesData).map(key => {
@@ -488,6 +492,10 @@ class RoletaApp {
       const m1 = sampleMovies[0] || cat.movies[1] || {};
       const m2 = sampleMovies[1] || cat.movies[2] || {};
       const m3 = sampleMovies[2] || cat.movies[3] || {};
+
+      const flagHtml = key === "nacional"
+        ? ` <svg class="flag-icon-br" viewBox="0 0 20 14" width="18" height="12.5" style="border-radius:2px; vertical-align:middle; display:inline-block; margin-left:6px; box-shadow:0 1px 3px rgba(0,0,0,0.4);" aria-hidden="true"><rect width="20" height="14" fill="#009c3b"/><polygon points="10,1.5 18.5,7 10,12.5 1.5,7" fill="#ffdf00"/><circle cx="10" cy="7" r="3.2" fill="#002776"/><path d="M7 6.8 C 8.5 6.2, 11.5 6.2, 13 7.2" stroke="#ffffff" stroke-width="0.5" fill="none"/></svg>`
+        : "";
 
       return `
         <a href="#${cat.id}" class="session-card full-bleed-card" data-category="${cat.id}">
@@ -518,7 +526,7 @@ class RoletaApp {
           <!-- Conteúdo Inferior Editorial (Apple TV+ / Awwwards Typography) -->
           <div class="card-bleed-content">
             <div class="card-genre-tag">${cat.badge}</div>
-            <h3 class="card-bleed-title">${cat.name}</h3>
+            <h3 class="card-bleed-title">${cat.name}${flagHtml}</h3>
             <p class="card-bleed-tagline">${cat.tagline}</p>
 
             <div class="card-bleed-footer">
